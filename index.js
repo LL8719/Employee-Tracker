@@ -159,4 +159,28 @@ function viewEmployeesByDepartment() {
 		});
 }
 
+// Add Department
+function addDepartment() {
+	return inquirer
+		.prompt({
+			name: 'departmentName',
+			type: 'input',
+			message: 'What is the name of the department you want to add?',
+		})
+		.then(function (answer) {
+			return connection
+				.promise()
+				.query('INSERT INTO department SET ?', {
+					department_name: answer.departmentName,
+				})
+				.then(() => {
+					console.log('Department added successfully!');
+					mainMenu();
+				})
+				.catch((err) => {
+					throw err;
+				});
+		});
+}
+
 mainMenu();
