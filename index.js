@@ -183,4 +183,58 @@ function addDepartment() {
 		});
 }
 
+// Add Role
+function addRole() {
+	const roleChoices = [];
+	connection
+		.promise()
+		.query('SELECT * FROM department')
+		.then(([departments]) => {
+			for (var i = 0; i < departments.length; i++) {
+				roleChoices.push(departments[i].department_name);
+			}
+			return inquirer.prompt([
+				{
+					name: 'title',
+					type: 'input',
+					message: 'What is the name of the role you want to add?',
+				},
+				{
+					name: 'salary',
+					type: 'input',
+					message: 'What is the salary for this role?',
+				},
+				{
+					name: 'department',
+					type: 'list',
+					choices: roleChoices,
+					message: 'Which department does this role belong to?',
+				},
+			]);
+		})
+		.then((answer) => {
+			return connection
+				.promise()
+				.query('SELECT id FROM department WHERE department_name = ?', [
+					answer.department,
+				])
+				.then(([department]) => {
+					return connection
+						.promise()
+						.query('INSERT INTO role SET ?', {
+							title: answer.title,
+							salary: answer.salary,
+							department_id: department[0].id,
+						})
+						.then(() => {
+							console.log('Role added successfully!');
+							mainMenu();
+						})
+						.catch((err) => {
+							throw err;
+						});
+				});
+		});
+}
+
 mainMenu();
