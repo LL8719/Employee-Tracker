@@ -237,4 +237,47 @@ function addRole() {
 		});
 }
 
+// Add Employee
+const addEmployee = async () => {
+	const res = await connection.promise().query('SELECT title FROM role');
+	const roleChoices = res[0].map((role) => role.title);
+
+	const answer = await inquirer.prompt([
+		{
+			type: 'input',
+			message: "Enter employee's first name:",
+			name: 'firstName',
+		},
+		{
+			type: 'input',
+			message: "Enter employee's last name:",
+			name: 'lastName',
+		},
+		{
+			type: 'list',
+			message: "Select employee's role:",
+			name: 'role',
+			choices: roleChoices,
+		},
+		{
+			type: 'input',
+			message: "Enter employee's manager ID:",
+			name: 'managerID',
+		},
+	]);
+
+	const role_id = roleChoices.indexOf(answer.role) + 1;
+	const manager_id = answer.managerID || null;
+
+	await connection.promise().query('INSERT INTO employee SET ?', {
+		first_name: answer.firstName,
+		last_name: answer.lastName,
+		role_id,
+		manager_id,
+	});
+
+	console.log('Employee added successfully!');
+	mainMenu();
+};
+
 mainMenu();
