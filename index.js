@@ -280,4 +280,64 @@ const addEmployee = async () => {
 	mainMenu();
 };
 
+// Update Role
+function updateEmployeeRole() {
+	const roleChoices = [];
+
+	connection
+		.promise()
+		.query('SELECT * FROM employee')
+		.then(([rows]) => {
+			const employeeChoices = rows.map((row) => ({
+				name: `${row.first_name} ${row.last_name}`,
+				value: row.id,
+			}));
+
+			return inquirer.prompt({
+				name: 'employeeId',
+				type: 'list',
+				choices: employeeChoices,
+				message: "Select the employee you'd like to update:",
+			});
+		})
+		.then((answer) => {
+			const employeeId = answer.employeeId;
+
+			connection
+				.promise()
+				.query('SELECT * FROM role')
+				.then(([rows]) => {
+					for (var i = 0; i < rows.length; i++) {
+						roleChoices.push(rows[i].title);
+					}
+					return inquirer.prompt({
+						name: 'role',
+						type: 'list',
+						choices: roleChoices,
+						message: "Select the employee's new role:",
+					});
+				})
+				.then((answer) => {
+					return connection
+						.promise()
+						.query('SELECT id FROM role WHERE title = ?', [answer.role])
+						.then(([rows]) => {
+							return connection
+								.promise()
+								.query('UPDATE employee SET role_id = ? WHERE id = ?', [
+									rows[0].id,
+									employeeId,
+								])
+								.then(() => {
+									console.log('Employee role updated successfully!');
+									mainMenu();
+								})
+								.catch((err) => {
+									throw err;
+								});
+						});
+				});
+		});
+}
+
 mainMenu();
