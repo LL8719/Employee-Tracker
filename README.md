@@ -12,7 +12,7 @@
 
 Employee Tracker is a command-line application to help manage a company's employee database, using Node.js, Inquirer, and MySQL
 Click the following link for video.
-[link text](https://drive.google.com/file/d/1CX1CugkzRU_U2MhvRAxLmeR_fKDqmNbN/view)
+[link text](https://drive.google.com/file/d/1GovQ8xfafnIHcL2J-CM5iZKRJt4lV0Jh/view)
 
 The following link displays the application on the terminal.
 ![screenshot](./images/Screenshot%202023-03-20%20182909.jpg)
@@ -30,7 +30,7 @@ The following link displays the application on the terminal.
 
 ## <a href="Installation">Installation</a>
 
-Node along with the Inquirer MySQL and console.table package are required to be able to run the application in the terminal. Please search the web for instructions on installing Node and the packages mentioned.
+Node along with the Inquirer MySQL dot.env and console.table package are required to be able to run the application in the terminal. Please search the web for instructions on installing Node and the packages mentioned.
 
 ## <a href="Usage">Usage</a>
 
